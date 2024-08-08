@@ -1,13 +1,13 @@
 'use client'
-
-import { Box, Button, Stack, TextField } from '@mui/material'
+import Image from 'next/image'
+import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import { useState, useRef, useEffect } from 'react'
 
 export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi! I'm Tyler, Target's support assistant. How can I help you today?`,
+      content: `Welcome to Target! How can I help you today?`,
     },
   ])
   const [message, setMessage] = useState('')
@@ -65,13 +65,13 @@ export default function Home() {
 
   const messagesEndRef = useRef(null)
 
-const scrollToBottom = () => {
-  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-}
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
-useEffect(() => {
-  scrollToBottom()
-}, [messages])
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   return (
     <Box
@@ -81,21 +81,60 @@ useEffect(() => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      overflow="hidden"
+      sx={{
+        p: {xs:1, sm:2, md:3}, boxSizing: 'border-box',
+      }}
     >
+      {/* Header */}
+      <Box 
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        p={2}
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        sx={{ mb:0.5 }}
+      >
+        <Box 
+          sx={{ 
+            display: 'flex', alignItems: 'center',
+            mb: {xs: 1, sm: 0},
+          }}
+        >
+          <Image src="/target.svg" alt="Target Icon" width={50} height={50} />
+        </Box>
+        <Typography 
+          variant="h6" fontWeight="bold"
+          sx={{
+            textAlign: 'center',
+            fontSize: {xs:'1rem', sm:'1.25rem'},
+            marginTop: {xs:1, sm:0}, flex:1,
+          }}
+        >
+          Have any questions? Ask Tyler - Target's Support Assistant!
+        </Typography>
+      </Box>
+
+      {/* Chatbot Content */}
       <Stack
         direction={'column'}
-        width="500px"
-        height="700px"
+        width="100%"
+        maxWidth="500px"
+        height="calc(100vh - 100px)"
         border="1px solid black"
         p={2}
         spacing={3}
+        sx={{
+          overflow: "hidden", mx: "auto",
+        }}
       >
         <Stack
           direction={'column'}
           spacing={2}
           flexGrow={1}
           overflow="auto"
-          maxHeight="100%"
+          sx={{ maxHeight: '100%' }}
         >
           {messages.map((message, index) => (
             <Box
@@ -112,8 +151,10 @@ useEffect(() => {
                     : 'secondary.main'
                 }
                 color="white"
-                borderRadius={16}
-                p={3}
+                borderRadius={6}
+                p={2}
+                maxWidth="90%"
+                sx={{ wordBreak: 'break-word'}}
               >
                 {message.content}
               </Box>
@@ -133,6 +174,19 @@ useEffect(() => {
           </Button>
         </Stack>
       </Stack>
+
+      {/* Footer */}
+      <Box 
+        width="100%" p={2} textAlign="center"
+        sx={{
+          mt: "auto",
+          fontSize: {xs: '0.8rem', sm:'1rem'},
+        }}
+      >
+        <Typography variant="body2" color="secondary.main">
+          © 2024 Target Support. All rights reserved.
+        </Typography>
+      </Box>
     </Box>
   )
 }
