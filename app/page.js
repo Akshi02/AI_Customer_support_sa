@@ -69,6 +69,12 @@ export default function Home() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  }
+
   useEffect(() => {
     scrollToBottom()
   }, [messages])
@@ -168,6 +174,7 @@ export default function Home() {
             fullWidth
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <Button variant="contained" onClick={sendMessage}>
             Send
