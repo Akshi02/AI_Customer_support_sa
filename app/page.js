@@ -7,8 +7,8 @@ import { useState, useRef, useEffect } from 'react'
 export default function Home() {
   const [messages, setMessages] = useState([
     {
-      role: 'assistant',
-      content: 'Welcome to Target! How can I help you today?',
+      role: "assistant",
+      content: "Welcome to Target! How can I help you today?",
     },
   ])
   const [message, setMessage] = useState('')
@@ -30,8 +30,8 @@ export default function Home() {
     setMessage('')
     setMessages((messages) => [
       ...messages,
-      { role: 'user', content: msg },
-      { role: 'assistant', content: '' },
+      { role: "user", content: msg },
+      { role: "assistant", content: "" },
     ])
   
     try {
@@ -40,11 +40,11 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([...messages, { role: 'user', content: msg }]),
+        body: JSON.stringify([...messages, { role: "user", content: msg }]),
       })
   
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error("Network response was not ok")
       }
   
       const reader = response.body.getReader()
