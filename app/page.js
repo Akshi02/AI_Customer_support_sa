@@ -8,7 +8,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Welcome to Target! How can I help you today?`,
+      content: 'Welcome to Target! How can I help you today?',
     },
   ])
   const [message, setMessage] = useState('')
@@ -129,7 +129,7 @@ export default function Home() {
             flex: 1,
           }}
         >
-          Ask Tyler - Target's Support Assistant!
+          Ask Tyler - Target&apos;s Support Assistant!
         </Typography>
       </Box>
 
