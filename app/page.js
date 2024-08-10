@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
-import { Box, Button, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Stack, TextField, Typography, CircularProgress, InputAdornment } from '@mui/material'
+import { Send } from '@mui/icons-material'
 import { useState, useRef, useEffect } from 'react'
 
 export default function Home() {
@@ -12,15 +13,24 @@ export default function Home() {
   ])
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(true)
 
-  const sendMessage = async () => {
-    if (!message.trim()) return;  // Don't send empty messages
+  const suggestedQuestions = [
+    "What are your store hours?",
+    "Where is my order?",
+    "What is your return policy?",
+    "How can I apply for a job?",
+  ]
+
+  const sendMessage = async (msg = message) => {
+    if (!msg.trim()) return;  // Don't send empty messages
     setIsLoading(true)
+    setShowSuggestions(false)  // Hide suggestions after first message
 
     setMessage('')
     setMessages((messages) => [
       ...messages,
-      { role: 'user', content: message },
+      { role: 'user', content: msg },
       { role: 'assistant', content: '' },
     ])
   
@@ -30,7 +40,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([...messages, { role: 'user', content: message }]),
+        body: JSON.stringify([...messages, { role: 'user', content: msg }]),
       })
   
       if (!response.ok) {
@@ -87,10 +97,7 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      overflow="hidden"
-      sx={{
-        p: {xs:1, sm:2, md:3}, boxSizing: 'border-box',
-      }}
+      sx={{ p: 3, bgcolor: '#f4f4f9' }}
     >
       {/* Header */}
       <Box 
@@ -100,47 +107,54 @@ export default function Home() {
         justifyContent="space-between"
         alignItems="center"
         width="100%"
-        sx={{ mb:0.5 }}
+        maxWidth="500px"
+        sx={{ 
+          bgcolor: 'white',
+          boxShadow: 1,
+          borderRadius: 2,
+          mb: 2,
+          border: '1px solid #e0e0e0',
+        }}
       >
-        <Box 
-          sx={{ 
-            display: 'flex', alignItems: 'center',
-            mb: {xs: 1, sm: 0},
-          }}
-        >
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 0 } }}>
           <Image src="/target.svg" alt="Target Icon" width={50} height={50} />
         </Box>
         <Typography 
-          variant="h6" fontWeight="bold"
+          variant="h6" 
+          fontWeight="bold"
           sx={{
             textAlign: 'center',
-            fontSize: {xs:'1rem', sm:'1.25rem'},
-            marginTop: {xs:1, sm:0}, flex:1,
+            fontSize: { xs: '1rem', sm: '1.25rem' },
+            mt: { xs: 1, sm: 0 },
+            flex: 1,
           }}
         >
-          {"Have any questions? Ask Tyler - Target's Support Assistant!"}
+          Ask Tyler - Target's Support Assistant!
         </Typography>
       </Box>
 
       {/* Chatbot Content */}
       <Stack
-        direction={'column'}
+        direction="column"
         width="100%"
         maxWidth="500px"
-        height="calc(100vh - 100px)"
-        border="1px solid black"
+        height="calc(100vh - 150px)"
         p={2}
-        spacing={3}
+        spacing={2}
         sx={{
-          overflow: "hidden", mx: "auto",
+          bgcolor: 'white',
+          boxShadow: 1,
+          borderRadius: 2,
+          border: '1px solid #e0e0e0',
+          overflow: 'hidden',
         }}
       >
         <Stack
-          direction={'column'}
+          direction="column"
           spacing={2}
           flexGrow={1}
           overflow="auto"
-          sx={{ maxHeight: '100%' }}
+          sx={{ maxHeight: '100%', pb: 2 }}
         >
           {messages.map((message, index) => (
             <Box
@@ -151,49 +165,101 @@ export default function Home() {
               }
             >
               <Box
+                display="flex"
+                alignItems="center" // Ensures that the text and image are aligned
                 bgcolor={
                   message.role === 'assistant'
-                    ? 'primary.main'
-                    : 'secondary.main'
+                    ? '#E3F2FD'
+                    : '#FFCDD2'
                 }
-                color="white"
-                borderRadius={6}
+                color="black"
+                borderRadius={4}
                 p={2}
-                maxWidth="90%"
-                sx={{ wordBreak: 'break-word'}}
+                maxWidth="85%"
+                sx={{ wordBreak: 'break-word', boxShadow: 1 }}
               >
+                {message.role === 'user' && (
+                  <Image
+                    src="/image.png" 
+                    alt="Chat Icon"
+                    width={27} 
+                    height={27} 
+                    style={{ marginRight: '8px' }}
+                  />
+                )}
                 {message.content}
               </Box>
             </Box>
           ))}
           <div ref={messagesEndRef} />
         </Stack>
-        <Stack direction={'row'} spacing={2}>
+
+        {/* Suggested Questions */}
+        {showSuggestions && (
+          <Stack direction="column" spacing={1} sx={{ mb: 2 }}>
+            {suggestedQuestions.map((question, index) => (
+              <Button 
+                key={index}
+                variant="outlined" 
+                onClick={() => sendMessage(question)}
+                fullWidth
+                sx={{
+                  borderColor: '#90CAF9',
+                  color: '#1E88E5',
+                  '&:hover': {
+                    borderColor: '#1E88E5',
+                    bgcolor: '#E3F2FD',
+                  },
+                }}
+              >
+                {question}
+              </Button>
+            ))}
+          </Stack>
+        )}
+
+        {/* User Input */}
+        <Stack direction="row" spacing={2}>
           <TextField
             label="Message"
             fullWidth
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
+            InputProps={{
+              endAdornment: (
+                isLoading && (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} />
+                  </InputAdornment>
+                )
+              ),
+            }}
+            sx={{
+              bgcolor: 'white',
+              borderRadius: 2,
+              boxShadow: 1,
+              borderColor: '#e0e0e0',
+            }}
           />
-          <Button variant="contained" onClick={sendMessage}>
-            Send
+          <Button 
+            variant="contained" 
+            onClick={() => sendMessage()} 
+            disabled={isLoading}
+            sx={{
+              bgcolor: '#1E88E5',
+              '&:hover': {
+                bgcolor: '#1565C0',
+              },
+              '&:disabled': {
+                bgcolor: '#90CAF9',
+              },
+              minWidth: 50, 
+            }}
+          >
+            <Send /> 
           </Button>
         </Stack>
       </Stack>
-
-      {/* Footer */}
-      <Box 
-        width="100%" p={2} textAlign="center"
-        sx={{
-          mt: "auto",
-          fontSize: {xs: '0.8rem', sm:'1rem'},
-        }}
-      >
-        <Typography variant="body2" color="secondary.main">
-          © 2024 Target Support. All rights reserved.
-        </Typography>
-      </Box>
     </Box>
   )
 }
