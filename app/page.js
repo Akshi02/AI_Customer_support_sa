@@ -11,7 +11,7 @@ export default function Home() {
       content: "Welcome to Target! How can I help you today?",
     },
   ])
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(true)
 
@@ -27,7 +27,7 @@ export default function Home() {
     setIsLoading(true)
     setShowSuggestions(false)  // Hide suggestions after first message
 
-    setMessage('')
+    setMessage("")
     setMessages((messages) => [
       ...messages,
       { role: "user", content: msg },
@@ -35,10 +35,10 @@ export default function Home() {
     ])
   
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
+      const response = await fetch("/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify([...messages, { role: "user", content: msg }]),
       })
@@ -64,10 +64,10 @@ export default function Home() {
         })
       }
     } catch (error) {
-      console.error('Error:', error)
+      console.error("Error:", error)
       setMessages((messages) => [
         ...messages,
-        { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+        { role: "assistant", content: "I'm sorry, but I encountered an error. Please try again later." },
       ])
     }
     setIsLoading(false)
@@ -80,7 +80,7 @@ export default function Home() {
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       sendMessage();
     }
   }
@@ -97,34 +97,34 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ p: 3, bgcolor: '#f4f4f9' }}
+      sx={{ p: 3, bgcolor: "#f4f4f9" }}
     >
       {/* Header */}
       <Box 
         display="flex"
-        flexDirection={{ xs: 'column', sm: 'row' }}
+        flexDirection={{ xs: "column", sm: "row" }}
         p={2}
         justifyContent="space-between"
         alignItems="center"
         width="100%"
         maxWidth="500px"
         sx={{ 
-          bgcolor: 'white',
+          bgcolor: "white",
           boxShadow: 1,
           borderRadius: 2,
           mb: 2,
-          border: '1px solid #e0e0e0',
+          border: "1px solid #e0e0e0",
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 1, sm: 0 } }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: { xs: 1, sm: 0 } }}>
           <Image src="/target.svg" alt="Target Icon" width={50} height={50} />
         </Box>
         <Typography 
           variant="h6" 
           fontWeight="bold"
           sx={{
-            textAlign: 'center',
-            fontSize: { xs: '1rem', sm: '1.25rem' },
+            textAlign: "center",
+            fontSize: { xs: "1rem", sm: "1.25rem" },
             mt: { xs: 1, sm: 0 },
             flex: 1,
           }}
@@ -142,11 +142,11 @@ export default function Home() {
         p={2}
         spacing={2}
         sx={{
-          bgcolor: 'white',
+          bgcolor: "white",
           boxShadow: 1,
           borderRadius: 2,
-          border: '1px solid #e0e0e0',
-          overflow: 'hidden',
+          border: "1px solid #e0e0e0",
+          overflow: "hidden",
         }}
       >
         <Stack
@@ -154,37 +154,37 @@ export default function Home() {
           spacing={2}
           flexGrow={1}
           overflow="auto"
-          sx={{ maxHeight: '100%', pb: 2 }}
+          sx={{ maxHeight: "100%", pb: 2 }}
         >
           {messages.map((message, index) => (
             <Box
               key={index}
               display="flex"
               justifyContent={
-                message.role === 'assistant' ? 'flex-start' : 'flex-end'
+                message.role === "assistant" ? "flex-start" : "flex-end"
               }
             >
               <Box
                 display="flex"
                 alignItems="center" // Ensures that the text and image are aligned
                 bgcolor={
-                  message.role === 'assistant'
-                    ? '#E3F2FD'
-                    : '#FFCDD2'
+                  message.role === "assistant"
+                    ? "#E3F2FD"
+                    : "#FFCDD2"
                 }
                 color="black"
                 borderRadius={4}
                 p={2}
                 maxWidth="85%"
-                sx={{ wordBreak: 'break-word', boxShadow: 1 }}
+                sx={{ wordBreak: "break-word", boxShadow: 1 }}
               >
-                {message.role === 'user' && (
+                {message.role === "user" && (
                   <Image
                     src="/image.png" 
                     alt="Chat Icon"
                     width={27} 
                     height={27} 
-                    style={{ marginRight: '8px' }}
+                    style={{ marginRight: "8px" }}
                   />
                 )}
                 {message.content}
@@ -204,11 +204,11 @@ export default function Home() {
                 onClick={() => sendMessage(question)}
                 fullWidth
                 sx={{
-                  borderColor: '#90CAF9',
-                  color: '#1E88E5',
-                  '&:hover': {
-                    borderColor: '#1E88E5',
-                    bgcolor: '#E3F2FD',
+                  borderColor: "#90CAF9",
+                  color: "#1E88E5",
+                  "&:hover": {
+                    borderColor: "#1E88E5",
+                    bgcolor: "#E3F2FD",
                   },
                 }}
               >
@@ -235,10 +235,10 @@ export default function Home() {
               ),
             }}
             sx={{
-              bgcolor: 'white',
+              bgcolor: "white",
               borderRadius: 2,
               boxShadow: 1,
-              borderColor: '#e0e0e0',
+              borderColor: "#e0e0e0",
             }}
           />
           <Button 
@@ -246,12 +246,12 @@ export default function Home() {
             onClick={() => sendMessage()} 
             disabled={isLoading}
             sx={{
-              bgcolor: '#1E88E5',
-              '&:hover': {
-                bgcolor: '#1565C0',
+              bgcolor: "#1E88E5",
+              "&:hover": {
+                bgcolor: "#1565C0",
               },
-              '&:disabled': {
-                bgcolor: '#90CAF9',
+              "&:disabled": {
+                bgcolor: "#90CAF9",
               },
               minWidth: 50, 
             }}
