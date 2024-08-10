@@ -118,7 +118,7 @@ export default function Home() {
             marginTop: {xs:1, sm:0}, flex:1,
           }}
         >
-          Have any questions? Ask Tyler - Target's Support Assistant!
+          {"Have any questions? Ask Tyler - Target's Support Assistant!"}
         </Typography>
       </Box>
 
