@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About Project
+
+This is Headstarter's week project - AI Chatbot, implemented by Akshita Bhatia, Archit Jain, Saadiyah Asif and Charles Phu.
+It's an integration betwen OpenRouter's api and front-end, to create Tyler; Target's AI chatbot.
+
+Click the link to see Tyler in action: https://tyler-chatbot-assistant.vercel.app
+
+Check this youtube video to see the demo: https://youtu.be/zBiu96KkZFQ
 
 ## Getting Started
 
